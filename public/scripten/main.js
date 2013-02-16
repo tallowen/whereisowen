@@ -1,4 +1,5 @@
-var story;
+var story_data = {};
+
 (function() {
   var Template = function(uri) {
     this.uri = uri;
@@ -30,13 +31,29 @@ var story;
     }
   };
 
+  var panTo = function(coordinates) {
+    map.panTo(new google.maps.LatLng(coordinates[1], coordinates[0]));
+  };
+
   storyTemplate = new Template('story.handlebars');
+  storyNoPicturesTemplate = new Template('story_no_pictures.handlebars');
+
   $.getJSON('stories.json', function(stories) {
     stories.forEach(function (story) {
+      story_data[story.id] = story;
+
       story.time_string = moment.unix(story.time).fromNow();
-      storyTemplate.render(story, function(html) {
+
+      var insert_html = function(html) {
         $('#statuses').append($(html));
-      });
+      };
+      // Handlebars doesnt like template logic. (This is dumb.)
+      if (story.image)
+        storyTemplate.render(story, insert_html);
+      else
+        storyNoPicturesTemplate.render(story, insert_html);
+
+
       if (story.coordinates) {
         create_point(story.coordinates[1], story.coordinates[0]);
       }
@@ -45,8 +62,7 @@ var story;
     // Pan to the first story that has a geo location
     for (var i = 0; i < stories.length; i++) {
       if (stories[i].coordinates) {
-        var coordinates = stories[i].coordinates;
-        map.panTo(new google.maps.LatLng(coordinates[1], coordinates[0]));
+        panTo(stories[i].coordinates);
         break;
       }
     }
@@ -55,6 +71,9 @@ var story;
     $('#statuses .status_update').click(function() {
       $('#statuses .status_update').removeClass('selected');
       $(this).addClass('selected');
+      var coordinates = story_data[this.getAttribute('data-story-id')].coordinates;
+      if (coordinates)
+        panTo(coordinates);
     });
   });
 })();
