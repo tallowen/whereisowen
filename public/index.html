@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <meta http-equiv='Content-Type' content='text/html;charset=utf-8'>
+  <title>Where is Owen?</title>
+  <style>
+html, body, div, h1, h2 {
+  padding: 0;
+  margin: 0;
+}
+
+html, body{
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+#statuses {
+  float: left;
+  width: 400px;
+  height: 100%;
+  overflow-y: scroll;
+  background: red;
+}
+
+#map_canvas {
+  height: 100%;
+}
+
+#statuses .status_update {
+  padding: 5px;
+  margin: 10px;
+  background: yellow;
+}
+
+#statuses .selected.status_update {
+  background: green;
+}
+
+#statuses .status_update img {
+  display: none;
+}
+
+#statuses .selected.status_update img {
+  width: 100%;
+  display: inline;
+}
+
+  </style>
+</head>
+<body>
+  <div id='statuses'></div>
+  <div id='map_canvas'></div>
+  <script src='/scripten/lib/handlebars.js'></script>
+  <script src='/scripten/lib/zepto.min.js'></script>
+  <script src="/scripten/lib/googlemaps.js"></script>
+  <script src="/scripten/lib/moment.min.js"></script>
+  <script src='/scripten/main.js'></script>
+  <script src='/scripten/map.js'></script>
+</body>
+</html>
