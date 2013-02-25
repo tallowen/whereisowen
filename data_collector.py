@@ -6,6 +6,8 @@ from datetime import datetime
 import requests
 from requests_oauthlib import OAuth1
 
+output_filename = os.environ.get('WHEREIS_OUTPUT_FILE', 'public/stories.json')
+
 account_id = os.environ['ACCOUNT_ID']
 
 consumer_key = os.environ['CONSUMER_KEY']
@@ -82,6 +84,6 @@ def get_stories():
 
 if __name__ == '__main__':
     data = get_stories()
-    with open('public/stories.json', 'w') as f:
+    with open(output_filename, 'w') as f:
         f.write(json.dumps(data))
     print data
